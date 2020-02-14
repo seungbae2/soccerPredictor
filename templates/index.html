@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>CSPN</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <link rel="stylesheet" href="./static/css/style.css">
+  <!-- <link rel="stylesheet" href="./static/css/d3Style.css"> -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+</head>
+
+<body>
+
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12 jumbotron text-center">
+        <h2>{{ data.home_team }} vs {{ data.away_team }}</h2>
+        <p>{{ data.game_date}}</p>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-2" style="width: 100%;">
+        <div class="panel panel-primary" style="width: 100%;">
+          <div class="panel-heading">
+            <h3 class="panel-title">Team Stats</h3>
+          </div>
+          <div id="sample-metadata" class="panel-body">
+            <table style="width:100%" >
+              <tr>
+                <th>Team Stats</th>
+                <th>{{ data.home_team }} </th>
+                <th>{{ data.away_team }}</th>
+              </tr>
+              <tr>
+                <td>Goals</td>
+                <td>{{ data.home_data.goals }}</td>
+                <td>{{ data.away_data.goals }}</td>
+              </tr>
+              <tr>
+                <td>Shots</td>
+                <td>{{ data.home_data.shots }}</td>
+                <td>{{ data.away_data.shots }}</td>
+              </tr>
+              <tr>
+                <td>Hits</td>
+                <td>{{ data.home_data.hits }}</td>
+                <td>{{ data.away_data.hits }}</td>
+              </tr>
+              <tr>
+                <td>Penalty Minutes</td>
+                <td>{{ data.home_data.pim }}</td>
+                <td>{{ data.away_data.pim }}</td>
+              </tr>
+              <tr>
+                <td>Power Play Percentage</td>
+                <td>{{ data.home_data.powerPlayPercentage }}</td>
+                <td>{{ data.away_data.powerPlayPercentage }}</td>
+              </tr>
+              <tr>
+                <td>Face Off Win Percentage</td>
+                <td>{{ data.home_data.faceOffWinPercentage }}</td>
+                <td>{{ data.away_data.faceOffWinPercentage }}</td>
+              </tr>
+              <tr>
+                <td>Shots Blocked</td>
+                <td>{{ data.home_data.blocked }}</td>
+                <td>{{ data.away_data.blocked }}</td>
+              </tr>
+              <tr>
+                <td>Takeaways</td>
+                <td>{{ data.home_data.takeaways }}</td>
+                <td>{{ data.away_data.takeaways }}</td>
+              </tr>
+              <tr>
+                <td>Giveaways</td>
+                <td>{{ data.home_data.giveaways }}</td>
+                <td>{{ data.away_data.giveaways }}</td>
+              </tr>
+            </table> 
+
+          </div>
+          
+        </div>
+      </div>
+    </div>
+    <div class="row" style="width: 100%;">
+      <div class="col-md-4">
+        <div id="shot_goal"></div>
+      </div>
+      <div class="col-md-4">
+        <div id="face_off"></div>
+      </div>
+      <div class="col-md-4">
+        <div id="hit"></div>
+      </div>
+    </div>
+    <br><br><br>
+    <div class="row">
+      
+      <br>
+      <div class="col-md-12">
+        <select name="period" id="period" style="width: 100%;">
+          <option value="all">All Periods</option>
+          <option value="1st">1st Period</option>
+          <option value="2nd">2nd Period</option>
+          <option value="3rd">3rd Period</option>
+          <option value="ot">OT</option>
+        </select>
+        <br><br>
+        <div class="chart">
+          <!-- <img src="./static/images/bg-rink.svg" z-index="-1"/> -->
+        </div>
+      </div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/5.5.0/d3.js"></script>
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+  <script src="./static/js/app.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-tip/0.7.1/d3-tip.min.js"></script>
+
+</body>
+
+</html>
