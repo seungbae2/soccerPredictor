@@ -61,19 +61,44 @@
 				<article id="main">
 						<section class="wrapper style3 container special">
 
+							<!-- <header class="major">
+								{% for hometeam,awayteam in hometeams|zip(awayteams) %}
+								<h2>{{ hometeam }} vs {{ awayteam }}</strong></h2>
+								{% endfor %}
+								{% for percenthomewin, percentawaywin in percenthomewins|zip(percentawaywins) %}
+								<p>{{ percenthomewin }} {{ percentdraw }} {{ percentawaywin }}</p>
+								{% endfor %}
+							</header> -->
+
 							<header class="major">
-								<h2>Remaining Schedule</strong></h2>
+								<h2>{{ hometeam }} vs {{ awayteam }}</strong></h2>
+								<p>{{ percenthomewin }} {{ percentdraw }} {{ percentawaywin }}</p>
 							</header>
 
 							<div class="row">
-								<div class="col-12">
+								<div class="col-6 col-12-narrower">
 
 									<section>
-										<ul class="teamlist">
-											{% for hometeam,awayteam in hometeams|zip(awayteams) %}
-											<li onclick='savefunction()'><a href="{{ url_for('savefunction', type1=hometeam, type2=awayteam) }}">{{ hometeam }} vs {{ awayteam }}</a></li>
+										<img src="images/arsenal.png" alt="" />
+										<header>
+											{% for hometeam in hometeams %}
+											<h3>{{ hometeam }}</h3>
 											{% endfor %}
-										</ul>
+										</header>
+										<!-- <p>Sed tristique purus vitae volutpat commodo suscipit amet sed nibh. Proin a ullamcorper sed blandit. Sed tristique purus vitae volutpat commodo suscipit ullamcorper sed blandit lorem ipsum dolore.</p> -->
+									</section>
+
+								</div>
+								<div class="col-6 col-12-narrower">
+
+									<section>
+										<img src="images/liverpool.png" alt="" />
+										<header>
+											{% for awayteam in awayteams %}
+											<h3>{{ awayteam }}</h3>
+											{% endfor %}
+										</header>
+										<!-- <p>Sed tristique purus vitae volutpat commodo suscipit amet sed nibh. Proin a ullamcorper sed blandit. Sed tristique purus vitae volutpat commodo suscipit ullamcorper sed blandit lorem ipsum dolore.</p> -->
 									</section>
 
 								</div>
@@ -85,20 +110,20 @@
 				</article>
 
 			<!-- CTA -->
-			<section id="cta">
+				<section id="cta">
 
-				<header>
-					<h2>Give Us Your Money</strong>!</h2>
-					<p>Pay us for the work we put into this project.</p>
-				</header>
-				<footer>
-					<ul class="buttons">
-						<li><a href="#" class="button primary">BitCoin</a></li>
-						<li><a href="#" class="button">CashApp</a></li>
-					</ul>
-				</footer>
+					<header>
+						<h2>Give Us Your Money</strong>!</h2>
+						<p>Pay us for the work we put into this project.</p>
+					</header>
+					<footer>
+						<ul class="buttons">
+							<li><a href="#" class="button primary">BitCoin</a></li>
+							<li><a href="#" class="button">CashApp</a></li>
+						</ul>
+					</footer>
 
-			</section>
+				</section>
 
 			<!-- Footer -->
 				<!-- <footer id="footer">
