@@ -29,10 +29,12 @@
           </div>
           <div id="sample-metadata" class="panel-body">
             <table style="width:100%" >
-              {%for data in match%}
+              {%for index in data%} 
               <tr>
-                <th>{{ data.home_team }} </th>
-                <th>{{ data.away_team }}</th>
+                <th>{{ index.match }}</th>
+                <th>{{ index.home }}</th>
+                <th>{{ index.draw }}</th>
+                <th>{{ index.away }}</th>
               </tr>
               {%endfor%}
             </table> 
