@@ -4,7 +4,6 @@ import statsmodels.formula.api as smf
 import os
 import pickle
 
-
 epl_1920 = pd.read_csv("http://football-data.co.uk/mmz4281/1920/E0.csv")
 epl_1920 = epl_1920[['HomeTeam','AwayTeam','FTHG','FTAG','FTR']]
 epl_1920 = epl_1920.rename(columns={'FTHG': 'HomeGoals', 'FTAG': 'AwayGoals','FTR':'Result'})

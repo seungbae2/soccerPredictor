@@ -4,7 +4,6 @@ import statsmodels.formula.api as smf
 
 import os
 import pickle
-import joblib
 
 def update_model(model):
 	epl_1920 = pd.read_csv("http://football-data.co.uk/mmz4281/1920/E0.csv")
@@ -19,12 +18,8 @@ def update_model(model):
 	poisson_model = smf.glm(formula="goals ~ home + team + opponent", data=goal_model_data, family=sm.families.Poisson()).fit()
 
 
-	predictor = pickle.load(open(os.path.join('predictor/plk_objects/predictor.plk'), 'rb'))
+	#predictor = pickle.load(open(os.path.join('predictor/plk_objects/predictor.plk'), 'rb'))
 
-	predictor = update_model(model=predictor)
+	#predictor = update_model(model=predictor)
 
-	pickle.dump(predictor, open(os.path.join('predictor/plk_objects/predictor.plk'), 'wb'), protocol=4)
-
-	
-# filename = 'predictor.sav'
-# joblib.dump(poisson_model, filename)
+	pickle.dump(poisson_model, open(os.path.join('predictor/plk_objects/predictor.plk'), 'wb'), protocol=4)

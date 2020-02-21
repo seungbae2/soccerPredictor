@@ -9,6 +9,7 @@ from update import update_model
 from apiRequest import getFutureFixture
 import statsmodels.api as sm
 import statsmodels.formula.api as smf
+import joblib
 
 app = Flask(__name__)
 
@@ -16,7 +17,7 @@ app = Flask(__name__)
 #### Loading predict model ####
 ###############################
 
-#poisson_model = pickle.load(open(os.path.join('predictor/plk_objects/predictor.plk'), 'rb'))
+#predictor = pickle.load(open(os.path.join('predictor/plk_objects/predictor.plk'), 'rb'))
 
 epl_1920 = pd.read_csv("http://football-data.co.uk/mmz4281/1920/E0.csv")
 epl_1920 = epl_1920[['HomeTeam','AwayTeam','FTHG','FTAG','FTR']]
@@ -27,7 +28,7 @@ goal_model_data = pd.concat([epl_1920[['HomeTeam','AwayTeam','HomeGoals']].assig
            epl_1920[['AwayTeam','HomeTeam','AwayGoals']].assign(home=0).rename(
             columns={'AwayTeam':'team', 'HomeTeam':'opponent','AwayGoals':'goals'})])
 
-poisson_model = smf.glm(formula="goals ~ home + team + opponent", data=goal_model_data, family=sm.families.Poisson()).fit()
+predictor = smf.glm(formula="goals ~ home + team + opponent", data=goal_model_data, family=sm.families.Poisson()).fit()
 
 def simulate_match(foot_model, homeTeam, awayTeam, max_goals=10):
     home_goals_avg = foot_model.predict(pd.DataFrame(data={'team': homeTeam, 
@@ -66,7 +67,6 @@ def changeClubName(matches):
     return matches
 
 upcoming_fixtures = changeClubName(future_fixtures)
-print(upcoming_fixtures)
 
 
 
@@ -80,7 +80,7 @@ def index():
     for index in upcoming_fixtures:
         homeTeam = index[1]
         awayTeam = index[2]
-        result = simulate_match(poisson_model, homeTeam, awayTeam, max_goals=10)
+        result = simulate_match(predictor, homeTeam, awayTeam, max_goals=10)
 
         date = index[0].split('T')[0]
         time = index[0].split('T')[1]
