@@ -19,8 +19,6 @@ def getFutureFixture():
 	fixture_list = []
 
 	for fixture in fixtures:
-	    fixture_list.append([fixture['event_date'],fixture['homeTeam']['team_name'],fixture['awayTeam']['team_name']])
+	    fixture_list.append([fixture['event_date'],fixture['homeTeam']['team_name'],fixture['awayTeam']['team_name'],fixture['homeTeam']['logo'],fixture['awayTeam']['logo']])
 
 	return fixture_list
-
-

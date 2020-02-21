@@ -31,10 +31,12 @@
             <table style="width:100%" >
               {%for index in data%} 
               <tr>
-                <th>{{ index.match }}</th>
-                <th>{{ index.home }}</th>
-                <th>{{ index.draw }}</th>
-                <th>{{ index.away }}</th>
+                <th>{{ index.time }}</th>
+                <th>{{ index.homeTeam }}</th>
+                <th>{{ index.awayTeam }}</th>
+                <th>{{ index.homeProp }}</th>
+                <th>{{ index.drawProp }}</th>
+                <th>{{ index.awayProp }}</th>
               </tr>
               {%endfor%}
             </table> 
