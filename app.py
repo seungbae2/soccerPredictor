@@ -9,7 +9,6 @@ from update import update_model
 from apiRequest import getFutureFixture
 import statsmodels.api as sm
 import statsmodels.formula.api as smf
-import joblib
 
 app = Flask(__name__)
 
@@ -17,8 +16,7 @@ app = Flask(__name__)
 #### Loading predict model ####
 ###############################
 
-poisson_model = pickle.load(open(os.path.join('predictor/plk_objects/predictor.plk'), 'rb'))
-#poission_model = joblib.load('predictor.sav')
+#poisson_model = pickle.load(open(os.path.join('predictor/plk_objects/predictor.plk'), 'rb'))
 
 epl_1920 = pd.read_csv("http://football-data.co.uk/mmz4281/1920/E0.csv")
 epl_1920 = epl_1920[['HomeTeam','AwayTeam','FTHG','FTAG','FTR']]
@@ -84,11 +82,15 @@ def index():
         awayTeam = index[2]
         result = simulate_match(poisson_model, homeTeam, awayTeam, max_goals=10)
 
+        date = index[0].split('T')[0]
+        time = index[0].split('T')[1]
+
         home_prop = np.round(np.sum(np.tril(result,-1))*100)
         draw_prop = np.round(np.sum(np.diag(result))*100)
         away_prop = np.round(np.sum(np.triu(result,1))*100)
         game = {
-            'time':index[0],
+            'date': date,
+            'time': time,
             'homeProp':home_prop,
             'drawProp':draw_prop,
             'awayProp':away_prop,
