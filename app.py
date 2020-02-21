@@ -11,7 +11,7 @@ import statsmodels.api as sm
 import statsmodels.formula.api as smf
 import joblib
 
-app = Flask(__name__)
+application = Flask(__name__)
 
 ###############################
 #### Loading predict model ####
@@ -106,4 +106,4 @@ def index():
 
 
 if __name__ == "__main__":
-	app.run(debug=True)
+	application.run()
