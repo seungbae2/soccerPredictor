@@ -97,7 +97,7 @@ scheduler_fixture.start()
 # every Thursday update model
 predictor = update_model()
 scheduler_predictor = BackgroundScheduler(deamon=True)
-scheduler_predictor.add_job(update_model, 'interval', hours=24)
+scheduler_predictor.add_job(update_model, 'interval', day_of_week=3)
 scheduler_predictor.start()
 
 
