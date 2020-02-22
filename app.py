@@ -9,7 +9,8 @@ from update import update_model
 from apiRequest import getFutureFixture
 import statsmodels.api as sm
 import statsmodels.formula.api as smf
-import joblib
+
+from apscheduler.schedulers.background import BackgroundScheduler
 
 application = Flask(__name__)
 
@@ -19,16 +20,31 @@ application = Flask(__name__)
 
 #predictor = pickle.load(open(os.path.join('predictor/plk_objects/predictor.plk'), 'rb'))
 
-epl_1920 = pd.read_csv("http://football-data.co.uk/mmz4281/1920/E0.csv")
-epl_1920 = epl_1920[['HomeTeam','AwayTeam','FTHG','FTAG','FTR']]
-epl_1920 = epl_1920.rename(columns={'FTHG': 'HomeGoals', 'FTAG': 'AwayGoals','FTR':'Result'})
+# epl_1920 = pd.read_csv("http://football-data.co.uk/mmz4281/1920/E0.csv")
+# epl_1920 = epl_1920[['HomeTeam','AwayTeam','FTHG','FTAG','FTR']]
+# epl_1920 = epl_1920.rename(columns={'FTHG': 'HomeGoals', 'FTAG': 'AwayGoals','FTR':'Result'})
 
-goal_model_data = pd.concat([epl_1920[['HomeTeam','AwayTeam','HomeGoals']].assign(home=1).rename(
-            columns={'HomeTeam':'team', 'AwayTeam':'opponent','HomeGoals':'goals'}),
-           epl_1920[['AwayTeam','HomeTeam','AwayGoals']].assign(home=0).rename(
-            columns={'AwayTeam':'team', 'HomeTeam':'opponent','AwayGoals':'goals'})])
+# goal_model_data = pd.concat([epl_1920[['HomeTeam','AwayTeam','HomeGoals']].assign(home=1).rename(
+#             columns={'HomeTeam':'team', 'AwayTeam':'opponent','HomeGoals':'goals'}),
+#            epl_1920[['AwayTeam','HomeTeam','AwayGoals']].assign(home=0).rename(
+#             columns={'AwayTeam':'team', 'HomeTeam':'opponent','AwayGoals':'goals'})])
 
-predictor = smf.glm(formula="goals ~ home + team + opponent", data=goal_model_data, family=sm.families.Poisson()).fit()
+# predictor = smf.glm(formula="goals ~ home + team + opponent", data=goal_model_data, family=sm.families.Poisson()).fit()
+
+def update_model():
+    epl_1920 = pd.read_csv("http://football-data.co.uk/mmz4281/1920/E0.csv")
+    epl_1920 = epl_1920[['HomeTeam','AwayTeam','FTHG','FTAG','FTR']]
+    epl_1920 = epl_1920.rename(columns={'FTHG': 'HomeGoals', 'FTAG': 'AwayGoals','FTR':'Result'})
+
+    goal_model_data = pd.concat([epl_1920[['HomeTeam','AwayTeam','HomeGoals']].assign(home=1).rename(
+                columns={'HomeTeam':'team', 'AwayTeam':'opponent','HomeGoals':'goals'}),
+               epl_1920[['AwayTeam','HomeTeam','AwayGoals']].assign(home=0).rename(
+                columns={'AwayTeam':'team', 'HomeTeam':'opponent','AwayGoals':'goals'})])
+
+    predictor_model = smf.glm(formula="goals ~ home + team + opponent", data=goal_model_data, family=sm.families.Poisson()).fit()
+    print('updated')
+
+    return predictor_model
 
 def simulate_match(foot_model, homeTeam, awayTeam, max_goals=10):
     home_goals_avg = foot_model.predict(pd.DataFrame(data={'team': homeTeam, 
@@ -68,12 +84,27 @@ def changeClubName(matches):
 
 upcoming_fixtures = changeClubName(future_fixtures)
 
+def fixtureBatch():
+    future_fixtures = getFutureFixture()
+    upcoming_fixtures = changeClubName(future_fixtures)
+    print(upcoming_fixtures)
+
+# every day update fixture
+scheduler_fixture = BackgroundScheduler(deamon=True)
+scheduler_fixture.add_job(fixtureBatch, 'interval', hours=24)
+scheduler_fixture.start()
+
+# every Thursday update model
+predictor = update_model()
+scheduler_predictor = BackgroundScheduler(deamon=True)
+scheduler_predictor.add_job(update_model, 'interval', dat_of_week=3)
+scheduler_predictor.start()
 
 
 ###############################
 ####  	Flask 			   ####
 ###############################
-@app.route("/")
+@application.route("/")
 def index():
     data = []
 
